@@ -157,8 +157,10 @@ def send_bloom():
         return type_check_error
 
     user = get_current_user()
-
-    blooms.add_bloom(sender=user, content=request.json["content"])
+    # //rebloom get new filed for repost
+    original_sender = request.json.get("original_sender")
+    # //add og sender to add bloom
+    blooms.add_bloom(sender=user, content=request.json["content"], original_sender=original_sender)
 
     return jsonify(
         {
