@@ -18,6 +18,8 @@ CREATE TABLE follows (
     follower INT NOT NULL REFERENCES users(id),
     followee INT NOT NULL REFERENCES users(id),
     UNIQUE(follower, followee)
+    original_sender VARCHAR, 
+    rebloom_count INT DEFAULT 0
 );
 
 CREATE TABLE hashtags (
