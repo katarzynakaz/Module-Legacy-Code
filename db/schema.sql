@@ -1,3 +1,10 @@
+DROP TABLE IF EXISTS hashtags CASCADE;
+DROP TABLE IF EXISTS follows CASCADE;
+DROP TABLE IF EXISTS blooms CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- //so I can add sender and count
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR NOT NULL,
@@ -10,7 +17,9 @@ CREATE TABLE blooms (
     id BIGSERIAL NOT NULL PRIMARY KEY,
     sender_id INT NOT NULL REFERENCES users(id),
     content TEXT NOT NULL,
-    send_timestamp TIMESTAMP NOT NULL
+    send_timestamp TIMESTAMP NOT NULL,
+    riginal_sender VARCHAR, 
+    rebloom_count INT DEFAULT 0
 );
 
 CREATE TABLE follows (
@@ -18,8 +27,6 @@ CREATE TABLE follows (
     follower INT NOT NULL REFERENCES users(id),
     followee INT NOT NULL REFERENCES users(id),
     UNIQUE(follower, followee)
-    original_sender VARCHAR, 
-    rebloom_count INT DEFAULT 0
 );
 
 CREATE TABLE hashtags (
