@@ -13,21 +13,24 @@ class Bloom:
     sender: User
     content: str
     sent_timestamp: datetime.datetime
+    original_sender: Optional[str] = None
+    rebloom_count: int = 0
 
 
-def add_bloom(*, sender: User, content: str) -> Bloom:
+def add_bloom(*, sender: User, content: str, original_sender: str = None) -> Bloom:
     hashtags = [word[1:] for word in content.split(" ") if word.startswith("#")]
 
     now = datetime.datetime.now(tz=datetime.UTC)
     bloom_id = int(now.timestamp() * 1000000)
     with db_cursor() as cur:
         cur.execute(
-            "INSERT INTO blooms (id, sender_id, content, send_timestamp) VALUES (%(bloom_id)s, %(sender_id)s, %(content)s, %(timestamp)s)",
+            "INSERT INTO blooms (id, sender_id, content, send_timestamp, original_sender) VALUES (%(bloom_id)s, %(sender_id)s, %(content)s, %(timestamp)s, %(og_sender)s))",
             dict(
                 bloom_id=bloom_id,
                 sender_id=sender.id,
                 content=content,
                 timestamp=datetime.datetime.now(datetime.UTC),
+                og_sender=original_sender,
             ),
         )
         for hashtag in hashtags:
@@ -95,6 +98,7 @@ def get_bloom(bloom_id: int) -> Optional[Bloom]:
             sender=sender_username,
             content=content,
             sent_timestamp=timestamp,
+            
         )
 
 
