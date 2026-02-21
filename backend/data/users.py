@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from hashlib import scrypt
+# from hashlib import scrypt
 import hashlib
 import random
 import string
@@ -90,8 +90,10 @@ def register_user(username: str, password_plaintext: str) -> User:
             raise UserRegistrationError("user already exists")
 
 
+# def scrypt(password_plaintext: bytes, password_salt: bytes) -> bytes:
+#     return hashlib.scrypt(password_plaintext, salt=password_salt, n=8, r=8, p=1)
 def scrypt(password_plaintext: bytes, password_salt: bytes) -> bytes:
-    return hashlib.scrypt(password_plaintext, salt=password_salt, n=8, r=8, p=1)
+    return hashlib.pbkdf2_hmac('sha256', password_plaintext, password_salt, 100000)
 
 
 SALT_CHARACTERS = string.ascii_uppercase + string.ascii_lowercase + string.digits
