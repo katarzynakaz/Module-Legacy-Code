@@ -58,6 +58,7 @@ function createProfile(template, { profileData, whoToFollow, isLoggedIn }) {
 			followButton.addEventListener("click", handleFollow);
 			if (!isLoggedIn) {
 				followButton.style.display = "none";
+				unfollowButtonEl.style.display = "none";
 			}
 
 			whoToFollowList.appendChild(wtfElement);
