@@ -1,55 +1,57 @@
-import {renderOne, renderEach, destroy} from "../lib/render.mjs";
+import { renderOne, renderEach, destroy } from "../lib/render.mjs";
 import {
-  state,
-  apiService,
-  getLogoutContainer,
-  getLoginContainer,
-  getTimelineContainer,
-  getHeadingContainer,
+	state,
+	apiService,
+	getLogoutContainer,
+	getLoginContainer,
+	getTimelineContainer,
+	getHeadingContainer,
 } from "../index.mjs";
-import {createLogin, handleLogin} from "../components/login.mjs";
-import {createLogout, handleLogout} from "../components/logout.mjs";
-import {createBloom} from "../components/bloom.mjs";
-import {createHeading} from "../components/heading.mjs";
+import { createLogin, handleLogin } from "../components/login.mjs";
+import { createLogout, handleLogout } from "../components/logout.mjs";
+import { createBloom } from "../components/bloom.mjs";
+import { createHeading } from "../components/heading.mjs";
 
 // Hashtag view: show all tweets containing this tag
 
-function hashtagView(hashtag) {
-  destroy();
+async function hashtagView(hashtag) {
+	destroy();
+	//check first if hastag data is here
+	if (state.currentHashtag !== hashtag) {
+		await apiService.getBloomsByHashtag(hashtag);
+	}
 
-  apiService.getBloomsByHashtag(hashtag);
+	renderOne(
+		state.isLoggedIn,
+		getLogoutContainer(),
+		"logout-template",
+		createLogout
+	);
+	document
+		.querySelector("[data-action='logout']")
+		?.addEventListener("click", handleLogout);
+	renderOne(
+		state.isLoggedIn,
+		getLoginContainer(),
+		"login-template",
+		createLogin
+	);
+	document
+		.querySelector("[data-action='login']")
+		?.addEventListener("click", handleLogin);
 
-  renderOne(
-    state.isLoggedIn,
-    getLogoutContainer(),
-    "logout-template",
-    createLogout
-  );
-  document
-    .querySelector("[data-action='logout']")
-    ?.addEventListener("click", handleLogout);
-  renderOne(
-    state.isLoggedIn,
-    getLoginContainer(),
-    "login-template",
-    createLogin
-  );
-  document
-    .querySelector("[data-action='login']")
-    ?.addEventListener("click", handleLogin);
-
-  renderOne(
-    state.currentHashtag,
-    getHeadingContainer(),
-    "heading-template",
-    createHeading
-  );
-  renderEach(
-    state.hashtagBlooms || [],
-    getTimelineContainer(),
-    "bloom-template",
-    createBloom
-  );
+	renderOne(
+		state.currentHashtag,
+		getHeadingContainer(),
+		"heading-template",
+		createHeading
+	);
+	renderEach(
+		state.hashtagBlooms || [],
+		getTimelineContainer(),
+		"bloom-template",
+		createBloom
+	);
 }
 
-export {hashtagView};
+export { hashtagView };
