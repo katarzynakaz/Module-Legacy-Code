@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-# from hashlib import scrypt
+from hashlib import scrypt
 import hashlib
 import random
 import string
