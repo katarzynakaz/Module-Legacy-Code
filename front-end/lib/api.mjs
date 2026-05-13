@@ -83,7 +83,6 @@ async function login(username, password) {
 		const data = await _apiRequest("/login", {
 			method: "POST",
 			body: JSON.stringify({ username, password }),
-			original_sender, //added sender for rebloom
 		});
 
 		if (data.success && data.token) {
