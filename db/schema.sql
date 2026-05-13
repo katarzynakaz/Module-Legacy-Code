@@ -18,8 +18,7 @@ CREATE TABLE blooms (
     sender_id INT NOT NULL REFERENCES users(id),
     content TEXT NOT NULL,
     send_timestamp TIMESTAMP NOT NULL,
-    riginal_sender VARCHAR, 
-    rebloom_count INT DEFAULT 0
+    original_bloom_id BIGINT REFERENCES blooms(id)
 );
 
 CREATE TABLE follows (
