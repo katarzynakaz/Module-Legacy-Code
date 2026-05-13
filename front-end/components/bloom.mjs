@@ -56,7 +56,7 @@ const createBloom = (template, bloom) => {
 
 	const rebloomBtn = bloomFrag.querySelector("[data-action='rebloom-btn']");
 	rebloomBtn.addEventListener("click", async () => {
-		await apiService.postBloom(bloom.content, bloom.sender);
+		await apiService.postBloom(bloom.content, bloom.id);
 
 		window.location.reload();
 	});
