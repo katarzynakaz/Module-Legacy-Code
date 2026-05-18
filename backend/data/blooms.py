@@ -71,7 +71,7 @@ def get_blooms_for_user(
         rows = cur.fetchall()
         blooms = []
         for row in rows:
-            bloom_id, sender_username, content, timestamp, og_sender, count = row
+            bloom_id, sender_username, content, timestamp, og_sender, rebloom_count = row
             blooms.append(
                 Bloom(
                     id=bloom_id,
@@ -79,7 +79,7 @@ def get_blooms_for_user(
                     content=content,
                     sent_timestamp=timestamp,
                     original_sender=og_sender,
-                    rebloom_count=count,
+                    rebloom_count=rebloom_count,
                 )
             )
     return blooms
@@ -94,15 +94,14 @@ def get_bloom(bloom_id: int) -> Optional[Bloom]:
         row = cur.fetchone()
         if row is None:
             return None
-        bloom_id, sender_username, content, timestamp, og_sender, count = row
+        bloom_id, sender_username, content, timestamp, og_sender, rebloom_count = row
         return Bloom(
             id=bloom_id,
             sender=sender_username,
             content=content,
             sent_timestamp=timestamp,
             original_sender=og_sender,
-            rebloom_count=count,
-            
+            rebloom_count=rebloom_count,
         )
 
 
@@ -129,7 +128,7 @@ def get_blooms_with_hashtag(
         rows = cur.fetchall()
         blooms = []
         for row in rows:
-            bloom_id, sender_username, content, timestamp, og_sender, count = row
+            bloom_id, sender_username, content, timestamp, og_sender, rebloom_count = row
             blooms.append(
                 Bloom(
                     id=bloom_id,
@@ -137,7 +136,7 @@ def get_blooms_with_hashtag(
                     content=content,
                     sent_timestamp=timestamp,
                     original_sender=og_sender,
-                    rebloom_count=count,
+                    rebloom_count=rebloom_count,
                 )
             )
     return blooms
